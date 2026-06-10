@@ -1,4 +1,31 @@
-import { getTodayKey, getWeekDates, formatWeekRange, WEEK_DAY_LABELS } from '../utils/date'
+const WEEK_DAY_LABELS = ['월', '화', '수', '목', '금', '토', '일']
+
+function toDateKey(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function getTodayKey() {
+  return toDateKey(new Date())
+}
+
+function shiftDate(dateKey, days) {
+  const [y, m, d] = dateKey.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  date.setDate(date.getDate() + days)
+  return toDateKey(date)
+}
+
+function getWeekDates(mondayKey) {
+  return Array.from({ length: 7 }, (_, i) => shiftDate(mondayKey, i))
+}
+
+function formatWeekRange(mondayKey) {
+  const sundayKey = shiftDate(mondayKey, 6)
+  return `${mondayKey} ~ ${sundayKey}`
+}
 
 function WeekView({ weekStartDate, selectedDate, todos, onSelectDate, onPrevWeek, onNextWeek }) {
   const todayKey  = getTodayKey()

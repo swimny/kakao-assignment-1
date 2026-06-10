@@ -1,9 +1,35 @@
 import { useState, useEffect } from 'react'
-import { getTodayKey, shiftDate, getMondayOfWeek } from './utils/date'
 import WeekView from './components/WeekView'
 import TodoInput from './components/TodoInput'
 import FilterTabs from './components/FilterTabs'
 import TodoList from './components/TodoList'
+
+function toDateKey(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function getTodayKey() {
+  return toDateKey(new Date())
+}
+
+function shiftDate(dateKey, days) {
+  const [y, m, d] = dateKey.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  date.setDate(date.getDate() + days)
+  return toDateKey(date)
+}
+
+function getMondayOfWeek(dateKey) {
+  const [y, m, d] = dateKey.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  const dow = date.getDay()
+  const diff = dow === 0 ? -6 : 1 - dow
+  date.setDate(date.getDate() + diff)
+  return toDateKey(date)
+}
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -14,9 +40,7 @@ function App() {
   const [inputText, setInputText] = useState('')
   const [showError, setShowError] = useState(false)
   const [currentFilter, setCurrentFilter] = useState('all')
-
   const [selectedDate, setSelectedDate] = useState(getTodayKey)
-
   const [weekStartDate, setWeekStartDate] = useState(() => getMondayOfWeek(getTodayKey()))
 
   useEffect(() => {

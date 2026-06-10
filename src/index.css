@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3131C7;
+  --color-primary-dark: #2525a8;
+  --color-sub: #E2EAFE;
+  --color-sub-dark: #c8d8fc;
+}
+
+body {
+  font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+  background-color: #f9fafb;
+  color: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+#root {
+  width: 100%;
+  max-width: 560px;
+}
